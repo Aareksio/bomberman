@@ -1,29 +1,24 @@
 # bomberman
 
-## Project setup
+Let's make a game... It'll be fun!
+
+Psst. Press backspace to restert!
+
+![preview](resources/preview.png)
+
+---
+
+Featuring:
+- Fluid movement
+- 4k textures
+- Upgrades (movement speed, bomb range, bomb count)
+- Bomb chaining
+- No sound
+- No multiplayer (yet!)
+
+---
+
 ```
 npm install
-```
-
-### Compiles and hot-reloads for development
-```
 npm run serve
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your tests
-```
-npm run test
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
