@@ -60,6 +60,9 @@ export class Game {
     const tile = this.map.getTile(playerPosition.x, playerPosition.y);
     if (!tile || tile.isObstacle) return;
 
+    const bomb = this.getBomb(playerPosition.x, playerPosition.y);
+    if (bomb) return;
+
     this.player.lastMove = Date.now();
     this.player.moveTo(playerPosition);
 
@@ -76,8 +79,6 @@ export class Game {
   explode(bomb) {
     const bombIndex = this.bombs.findIndex(el => el.id === bomb.id);
     if (bombIndex === -1) return; // Already exploded
-
-    console.log('Exploding', bomb);
 
     this.bombs.splice(bombIndex, 1);
     if (bomb.owner.id === this.player.id) this.player.bombsPlaced--;
@@ -106,7 +107,6 @@ export class Game {
     }
 
     for (const bomb of bombsToChain) {
-      console.log('Chaining bomb', bomb);
       this.explode(bomb);
     }
   }
