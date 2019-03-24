@@ -57,14 +57,12 @@
         }
       },
       onKeyUp($event) {
-        console.log('keyUp', $event.key);
-
         switch ($event.key) {
           case 'ArrowUp':
           case 'ArrowDown':
           case 'ArrowLeft':
           case 'ArrowRight':
-            this.direction = Direction.STAND;
+            // this.direction = Direction.STAND;
             break;
         }
       },
@@ -91,6 +89,8 @@
             if (this.playerPosition.x > 5) this.playerPosition.x = 5;
             break;
         }
+
+        this.direction = Direction.STAND;
       },
       tick() {
         const shouldMove = (Date.now() - this.lastMove > this.moveTime) && (this.direction !== Direction.STAND);
