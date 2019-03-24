@@ -1,45 +1,31 @@
 <template>
   <div class="bomberman-stage">
-    <div class="bomberman-map">
-      <div class="bomberman-map__row" v-for="i in 6" :key="`row-${i}`">
-        <div class="bomberman-map__cell" v-for="j in 6" :key="`cell-${j}-${i}`"></div>
-      </div>
-    </div>
-
-    <bomberman-hero :x="playerPosition.x" :y="playerPosition.y"></bomberman-hero>
+    <bomberman-map :map="game.map"></bomberman-map>
+    <bomberman-player :player="game.player"></bomberman-player>
+    <bomberman-bomb v-for="bomb in game.bombs" :bomb="bomb" :key="`bomb-${bomb.id}`"></bomberman-bomb>
+    <bomberman-exposion v-for="explosion in game.explosions" :explosion="explosion" :key="`explosion-${explosion.id}`"></bomberman-exposion>
   </div>
 </template>
 
 <script>
-  import BombermanHero from './bomberman-hero';
+  import BombermanPlayer from './bomberman-player';
+  import BombermanMap from './bomberman-map';
+  import BombermanBomb from './bomberman-bomb';
+  import BombermanExposion from './bomberman-explosion';
+
+  import { Game } from '../models/Game';
 
   export default {
     name: 'bomberman-stage',
     props: {
-      playerPosition: Object
+      game: Game
     },
-    components: { BombermanHero }
+    components: { BombermanExposion, BombermanMap, BombermanPlayer, BombermanBomb }
   }
 </script>
 
 <style lang="scss">
   .bomberman-stage {
     position: relative;
-  }
-
-  .bomberman-map {
-    border: 1px solid #cccccc;
-    box-sizing: border-box;
-  }
-
-  .bomberman-map__row {
-    display: flex;
-  }
-
-  .bomberman-map__cell {
-    height: 2rem;
-    width: 2rem;
-    border: 1px solid #cccccc;
-    box-sizing: border-box;
   }
 </style>
