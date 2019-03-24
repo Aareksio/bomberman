@@ -20,12 +20,17 @@
     components: { BombermanStage },
     data() {
       return {
-        direction: Direction.STAND,
+        directions: [],
         playerPosition: { x: 0, y: 0 },
         lastMove: Date.now(),
         nextTick: null,
         moveTime: 250
       };
+    },
+    computed: {
+      direction() {
+        return this.directions[0]
+      }
     },
     mounted() {
       window.addEventListener('keydown', this.onKeyDown);
@@ -38,32 +43,33 @@
       window.removeEventListener('keyup', this.onKeyUp);
     },
     methods: {
-      onKeyDown($event) {
-        console.log('keyDown', $event.key);
-
-        switch ($event.key) {
+      keyToDirection(key) {
+        switch (key) {
           case 'ArrowUp':
-            this.direction = Direction.UP;
-            break;
+            return Direction.UP;
           case 'ArrowDown':
-            this.direction = Direction.DOWN;
-            break;
+            return Direction.DOWN;
           case 'ArrowLeft':
-            this.direction = Direction.LEFT;
-            break;
+            return Direction.LEFT;
           case 'ArrowRight':
-            this.direction = Direction.RIGHT;
-            break;
+            return Direction.RIGHT;
+        }
+      },
+      onKeyDown($event) {
+        const direction = this.keyToDirection($event.key);
+
+        if (direction) {
+          const directionIndex = this.directions.indexOf(direction);
+          if (directionIndex > 0) this.directions.splice(directionIndex, 1);
+          if (directionIndex !== 0) this.directions.unshift(direction);
         }
       },
       onKeyUp($event) {
-        switch ($event.key) {
-          case 'ArrowUp':
-          case 'ArrowDown':
-          case 'ArrowLeft':
-          case 'ArrowRight':
-            // this.direction = Direction.STAND;
-            break;
+        const direction = this.keyToDirection($event.key);
+
+        if (direction) {
+          const directionIndex = this.directions.indexOf(direction);
+          if (directionIndex !== -1) this.directions.splice(directionIndex, 1);
         }
       },
       move() {
@@ -89,11 +95,9 @@
             if (this.playerPosition.x > 5) this.playerPosition.x = 5;
             break;
         }
-
-        this.direction = Direction.STAND;
       },
       tick() {
-        const shouldMove = (Date.now() - this.lastMove > this.moveTime) && (this.direction !== Direction.STAND);
+        const shouldMove = (Date.now() - this.lastMove > this.moveTime) && this.direction;
         if (shouldMove) this.move();
 
         this.nextTick = requestAnimationFrame(() => this.tick());
